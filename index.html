@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script
+			  src="https://code.jquery.com/jquery-3.6.0.js"
+			  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+			  crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script type="text/javascript" src="script.js" defer></script>
+
+	<title>ИДЗ ПАРНОЕ СРАВНЕНИЕ</title>
+</head>
+<body class="vertical">
+	<header class="header"></header>
+	<main class="content vertical">
+		<form id="inputData" class="panel">
+			<div class="vertical panel__block">
+				<h3 class="panel__header"> Индивидуальное домашнее задание </h3>
+				<h3 class="panel__header"> Применение методов экспертных оценок </h3>
+				<h3 class="panel__header"> Вариант 4 </h3>
+				<h3 class="panel__header"> Метод парных сравнений. Нормирование суммарных чисел предпочтения </h3>
+			</div>
+			<div class="vertical panel__block">
+				<p class="panel__block__header"> Количество объектов </p>
+				<p class="panel__additional-text"> Введите число от 2 до 25 включительно </p>
+				<input type="number" id="vertexesCount" class="number-input" value="5" min="2" max="25">
+			</div>
+			<div class="vertical panel__block">
+				<p class="panel__block__header"> Количество экспертов </p>
+				<p class="panel__additional-text"> Введите число от 2 до 32 включительно </p>
+				<input type="number" id="expertsCount" class="number-input" value="2" min="2" max="32">
+			</div>
+			<!-- <div class="vertical panel__block">
+				<p class="panel__block__header"> Alpha </p>
+				<p class="panel__additional-text"> Введите 0.5 </p>
+				<input type="number" id="expertsCount" class="number-input" value="2" min="2" max="32">
+			</div> -->
+			<div class="vertical panel__block">
+				<p class="panel__block__header"> Заполните обобщенную матрицу парных сравнений </p>
+				<div id="inputTable" class="table vertical">
+					<div class="table__top-signature horizontal">
+						<label>o1</label>
+					</div>
+					<div class="table__content__wrapper horizontal">
+						<div class="table__left-signature vertical">
+							<label>o1</label>
+						</div>
+						<table class="table__content vertical">
+							<tr class="horizontal table__row">
+								<td class="table__cell">
+									<input type="number" class="table__cell__input" value="0" min="0" max="99">
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="vertical panel__block">
+				<button id="calculateBtn" class="button"> Обработать результаты опроса </button>
+				<div id="error" class="panel__block">
+					<p><!-- текст ошибки --></p>
+				</div>
+			</div>
+		</form>
+		<div class="panel">
+			<p class="panel__block__header"> Отчет о вычислениях: </p>
+			<div id="parametersOutput" class="vertical panel__block">
+			</div>
+		</div>
+	</main>
+</body>
+</html>

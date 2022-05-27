@@ -1,0 +1,201 @@
+* { margin: 0; padding: 0; }
+*,*:before,*:after{
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+p, label, input, h3 { font-family: Verdana, sans-serif }
+
+h3 { 
+	font-weight: normal;
+	font-size: 1.2rem;
+}
+
+body, .content {
+	width: 100%;
+}
+
+input, textarea, button, .button {
+	padding-left: 5px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	/*border: 1px solid #FFCA6E;*/
+	border: none;
+	background: #F3EDDF;
+}
+
+.button:hover {
+	background: lightgray;
+}
+
+.button {
+	margin-right: auto;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	padding-left: 7px;
+	padding-right: 7px;
+	font-size: 1rem;
+}
+
+.button:hover { background: ;}
+
+.number-input {
+	max-width: 50px;
+	height: 25px;
+}
+
+.vertical {
+	display: flex;
+	flex-direction: column;
+}
+
+.horizontal {
+	display: flex;
+	flex-direction: row;
+}
+
+.panel {
+	display: flex;
+	flex-direction: column;
+	width: 70vw;
+	max-width: 750px;
+	margin-top: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 15px;
+	/*background: #F9F9F9;*/
+}
+
+.panel__block__header {
+	margin-bottom: 5px;
+}
+
+.panel__header {
+	width: 100%;
+	text-align: center;
+}
+
+#lr1InputPanel {
+	display: flex;
+	flex-direction: column;
+}
+
+.panel__block + .panel__block {
+	margin-top: 20px;
+}
+
+.panel__block {
+	width: 100%;
+	margin-right: auto;
+}
+
+.panel__block__row {
+	align-items: center;
+}
+
+.panel__additional-text {
+	/*font-style: oblique;*/
+	color: #1F3838;
+	font-size: 0.8rem;
+	margin-right: 5px;
+	margin-bottom: 5px;
+}
+
+#isOriented {
+	margin-right: 7px;
+}
+
+
+
+table {
+	margin-right: auto;
+	border-radius: 5px;
+	overflow: hidden;
+}
+
+.table {
+	width: fit-content;
+	height: fit-content;
+}
+
+.table__top-signature {
+	align-items: flex-end;
+	width: fit-content;
+	margin-left: auto;
+	margin-bottom: 5px;
+	font-weight: bold;
+}
+
+.table__top-signature label {
+	display: flex;
+	justify-content: center;
+	width: 50px;
+}
+
+.table__left-signature {
+	align-items: flex-end;
+	width: fit-content;
+	margin-top: auto;
+	margin-right: 5px;
+	font-weight: bold;
+}
+
+.table__left-signature label {
+	height: 30px;
+}
+
+.table__cell {
+	display: flex;
+	width: 50px;
+	height: 30px;
+	padding: 2px;
+	justify-content: center;
+	align-items: center;
+}
+
+.table__cell__input:focus {
+	outline: none;
+	background: #D1D5E1;
+}
+
+.table__cell__input {
+	border-radius: 0px;
+	border: none;
+	width: 100%;
+	height: 100%;
+}
+
+#error > p {
+	color: darkred;
+}
+
+.map__row + .map__row {
+	margin-top: 5px;
+}
+
+.map__row {
+	align-items: center;
+}
+
+.map__row__first {
+	margin-right: 2px;
+}
+
+.map__row__second {
+	margin-left: 10px;
+}
+
+.map__row__array {
+	margin-left: 10px;
+}
+
+.map__elem {
+	margin-right: 5px;
+}
+
+.map__button {
+	height: 25px;
+	width: 25px;
+	margin-right: 5px;
+	border-radius: 10000px;
+}
