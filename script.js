@@ -1,7 +1,11 @@
 (function() {
   /**
    * Корректировка округления десятичных дробей.
-   * Взято из документации Math.floor() 
+   *
+   * @param {String}  type  Тип корректировки.
+   * @param {Number}  value Число.
+   * @param {Integer} exp   Показатель степени (десятичный логарифм основания корректировки).
+   * @returns {Number} Скорректированное значение.
    */
   function decimalAdjust(type, value, exp) {
     // Если степень не определена, либо равна нулю...
@@ -62,43 +66,28 @@ $('#calculateBtn').on('click', function() {
 	hideError();
 	$('#parametersOutput').empty();
 
-	//let sumMatrix = getInputMatrix(inputTableSelector);
+	let sumMatrix = getInputMatrix(inputTableSelector);
 
-	let sumMatrix = [  						// матрица из методички
-		[0,0,3,0,0,0,0,0],
-		[3,0,3,3,2,3,0,0],
-		[0,0,0,2,3,3,0,0],
-		[3,0,1,0,3,3,0,0],
-		[3,1,0,0,0,3,0,0],
-		[3,0,0,0,0,0,0,0],
-		[3,3,3,3,3,3,0,3],
-		[3,3,3,3,3,3,0,0],
-	];
-
-	let expertsCount = parseInt($('#expertsCount').val());
-	if (!isCorrectMatrix(sumMatrix, expertsCount)) {
-		showError('Сумма значений при сравнении двух объектов не везде равно количеству экспертов');
-	} else {
-		let estimation = new Estimation(sumMatrix, expertsCount);
-		estimation.analyzeAndShow();
-	}
+	// let sumMatrix = [
+	// 	[0,0,3,0,0,0,0,0],
+	// 	[3,0,3,3,2,3,0,0],
+	// 	[0,0,0,2,3,3,0,0],
+	// 	[3,0,1,0,3,3,0,0],
+	// 	[3,1,0,0,0,3,0,0],
+	// 	[3,0,0,0,0,0,0,0],
+	// 	[3,3,3,3,3,3,0,3],
+	// 	[3,3,3,3,3,3,0,0],
+	// ];
+	
+	let estimation = new Estimation(sumMatrix);
+	estimation.analyzeAndShow();
 });
-
-function isCorrectMatrix (matrix, expertsCount) {
-		for (var i = 0; i < matrix.length; i++) {
-			for (var j = 0; j < i; j++) {
-				if (matrix[i][j] + matrix[j][i] !== expertsCount)
-					return false;
-			}
-		}
-		return true;
-	}
 
 class Estimation {
 
-	constructor(sumMatrix, expertsCount) {
+	constructor(sumMatrix) {
 		this.gamma = sumMatrix;
-		this.m = expertsCount;
+		this.m = 3;
 		this.n = this.gamma.length; 
 	}
 
@@ -133,20 +122,22 @@ class Estimation {
 
 		let X;
 		let X_crit;
-		X = 4 / (this.m - 2.0) * 
-				(D - 0.5 * C2n * C2m * (this.m - 3.0) / (this.n - 2.0));
-		Estimation.#printParameter('Статистика (Хнабл)', X);
 		if (v > 30) {
+			X = 4 / (this.m - 2.0) * 
+				(D - 0.5 * C2n * C2m * (this.m - 3.0) / (this.n - 2.0));
+			Estimation.#printParameter('Статистика (Хнабл)', X);
+
 			X_crit = v + lambda * Math.sqrt(2.0 * v) + 
 				2.0/3.0 * (lambda**2 - 1) + 
 				(lambda**3 - 7.0 * lambda) / (9.0 * Math.sqrt(2.0 * v));
+			Estimation.#printParameter('Статистика (X^2кр)', X_crit);
+			Estimation.#printParameter('=> Мнения экспертов', (X >= X_crit ? '' : 'не ') + 'cогласованы');
 		} else {
-			X_crit = Estimation.getKhi_sq_cri(0.05, v);
-			//showError('Неподдерживаемое число степеней свободы по заданию'); 
+			let X_crit = this.#getKhi_sq_crit(v, 0.05);
+			Estimation.#printParameter('Статистика (Dнабл)', D);
+			Estimation.#printParameter('Статистика (X^2кр)', X_crit);
+			Estimation.#printParameter('=> Мнения экспертов', (D >= X_crit ? '' : 'не ') + 'cогласованы');
 		}
-
-		Estimation.#printParameter('Статистика (X^2кр)', X_crit);
-		Estimation.#printParameter('=> Мнения экспертов', (X >= X_crit ? '' : 'не ') + 'cогласованы');
 
 		let yj = this.gamma.map(function (row) {
 			return row.reduce(Estimation.#sumReduce)
@@ -173,19 +164,15 @@ class Estimation {
 		}
 	}
 
-	static #sumReduce(acc, x) {
-		return acc + x;
-	}
-
-	getKhi_sq_crit(v, alpha) {
+	#getKhi_sq_crit(v, alpha) {
 		const COLUMN_ID_MAP = new Map([[0.05, 2]]);
 
 		if (Array.from(COLUMN_ID_MAP.keys())
-				.every(x => !this.isFloatEq(alpha, x))) {
+				.every(x => !this.#isFloatEq(alpha, x))) {
 			throw new Error('Неподдерживаемый уровень значимости');
 
 		} else if (v <= 0 && v >= 31) {
-			throw new Error('Поддерживаемое число степеней свободы: от 1 до 30 вкл.');
+			throw new Error('Поддерживаемое число степеней свободы в данной функции: от 1 до 30 вкл.');
 		}
 
 		const DOTS = [
@@ -221,11 +208,15 @@ class Estimation {
 			[50.9, 47.0, 43.8, 18.5, 16.8, 15.0]
 		];
 
-		return DOTS[v][COLUMN_ID_MAP.get(alpha)];   
-    }
+		return DOTS[v][COLUMN_ID_MAP.get(alpha)];
+	}
 
-	isFloatEq(a, b){
-		return Math.abs(a-b)<0.000001;
+	#isFloatEq(a, b) {
+		return Math.abs(a-b) < 0.000001;
+	}
+
+	static #sumReduce(acc, x) {
+		return acc + x;
 	}
 }
 
